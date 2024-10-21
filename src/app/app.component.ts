@@ -9,6 +9,7 @@ import {ProductType} from "./types/product.type";
 
 export class AppComponent {
   showPresent: boolean = true;
+  phoneNumber: string = '+375 (29) 368-98-68';
 
   public advantages = [
     {
