@@ -1,17 +1,20 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ProductType} from "./types/product.type";
+import {ProductService} from "./services/product.service";
+import {CartService} from "./services/cart.service";
+import {AdvantageType} from "./types/advantage.type";
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
 })
 
-export class AppComponent {
+export class AppComponent implements OnInit {
   showPresent: boolean = true;
-  phoneNumber: string = '+375 (29) 368-98-68';
+  phoneNumber: string = '375293689868';
 
-  public advantages = [
+  advantages: AdvantageType[] = [
     {
       number: '1',
       title: 'Лучшие продукты',
@@ -32,35 +35,21 @@ export class AppComponent {
       title: 'Честный продукт',
       description: 'Вкус, качество и безопасность наших пирогов подтверждена декларацией о соответствии, которую мы получили 22.06.2016 г.',
     },
-  ]
-
-  public products = [
-    {
-      image: 'menu1.png',
-      title: 'Макарун с малиной',
-      price: 1.70,
-    },
-    {
-      image: 'menu2.png',
-      title: 'Макарун с манго',
-      price: 1.80,
-    },
-    {
-      image: 'menu3.png',
-      title: 'Макарун с ванилью',
-      price: 1.90,
-    },
-    {
-      image: 'menu4.png',
-      title: 'Макарун с фисташками',
-      price: 2.10,
-    },
   ];
 
-  public formValues = {
+  products: ProductType[] = [];
+
+  formValues = {
     productTitle: '',
     name: '',
     phone: '',
+  };
+
+  constructor(public productService: ProductService, public cartService: CartService) {
+  }
+
+  ngOnInit() {
+    this.products = this.productService.getProducts();
   }
 
   public scrollTo(target: HTMLElement): void {
@@ -70,6 +59,9 @@ export class AppComponent {
   public addToCard(product: ProductType, target: HTMLElement): void {
     this.scrollTo(target);
     this.formValues.productTitle = product.title.toUpperCase();
+    this.cartService.count++;
+    this.productService.addItem(product);
+    alert(product.title + ' добавлен в корзину');
   }
 
   public createOrder() {
@@ -86,6 +78,7 @@ export class AppComponent {
       return;
     }
     alert('Заказ успешно оформлен');
+
     this.formValues = {
       productTitle: '',
       name: '',

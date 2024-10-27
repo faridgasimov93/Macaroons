@@ -33,7 +33,7 @@
         </li>
       </ul>
     </nav>
-    <a class="header-contacts contacts" [href]="'tel: ' + phoneNumber">{{phoneNumber}}</a>
+    <a class="header-contacts contacts" [href]="'tel: ' + phoneNumber | phoneFormat">{{phoneNumber | phoneFormat}}</a>
     <div class="burger" id="burger">
       <svg id="Layer_1" enable-background="new 0 0 512 512" height="512" viewBox="0 0 512 512" width="512"
            xmlns="http://www.w3.org/2000/svg">
@@ -56,7 +56,7 @@
         Побалуйте себя и своих близких самыми вкусными и ароматными домашними пироженками Macaroon!
       </div>
       <div class="main__action">
-        <button class="btn main__btn" (click)="scrollTo(menuElement)">Выбрать маракун</button>
+        <button class="btn main__btn" (click)="scrollTo(menuElement)" ButtonEffects >Выбрать маракун</button>
       </div>
     </div>
     <div class="main__info-image">
@@ -81,13 +81,9 @@
       <img class="advantages__image-img" src="assets/images/advantages-img.png" alt="Картинка-Макаруна">
     </div>
     <div class="advantages_list">
-      <div class="advantage" *ngFor="let advantage of advantages">
-        <div class="advantage__number">
-          <span class="number">{{advantage.number}}</span>
-        </div>
-        <div class="advantage__title">{{advantage.title}}</div>
-        <div class="advantage__text">{{advantage.description}}</div>
-      </div>
+
+      <advantage *ngFor="let advantage of advantages" [advantage]="advantage"></advantage>
+
     </div>
 
   </div>
@@ -97,19 +93,9 @@
   <div class="container menu__container">
     <div class="menu__container-title">Выберите свой макарун</div>
     <div class="menu__items-list">
-      <div class="menu__item" *ngFor="let product of products; let i = index">
-        <img src="assets/images/{{product.image}}" alt="macaroon{{i+1}}">
-        <div class="menu__item-title">{{product.title}}</div>
-        <div class="item__info-actions">
-          <div class="item__info">
-            <div class="count">1 шт</div>
-            <div class="price">{{product.price}} руб.</div>
-          </div>
-          <div class="info__actions-button">
-            <button class="btn menu__btn" (click)="addToCard(product ,orderElement)">Заказать</button>
-          </div>
-        </div>
-      </div>
+
+      <product *ngFor="let product of products" [product]="product" (addToCartEvent)="addToCard($event, orderElement)"></product>
+
     </div>
   </div>
 </section>
@@ -143,7 +129,7 @@
           </div>
         </label>
         <div class="order__details-btn">
-          <button class="btn order__btn" (click)="createOrder()">Оформить заказ</button>
+          <button class="btn order__btn" (click)="createOrder()" ButtonEffects >Оформить заказ</button>
         </div>
       </div>
       <div class="order__menu-image">
@@ -154,10 +140,10 @@
 </section>
 
 <div class="extra-gift" *ngIf="showPresent">
-  <img class="gift-image" src="assets/images/present.png" alt="TakeYourGift">
+  <img class="gift-image" src="assets/images/cart.png" alt="TakeYourGift">
+  <div class="gift-count">{{cartService.count}}</div>
   <div class="gift-text">
-    Оформите заказ
-    и получите подарок!
+    {{productService.totalPrice | currency: '':'': '1.2-2'}} руб.
     <div class="triangle-right"></div>
     <div class="triangle-right-background"></div>
   </div>

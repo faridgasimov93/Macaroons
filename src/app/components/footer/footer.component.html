@@ -12,6 +12,6 @@
       </div>
       <div class="instagram__text">Мы в Instagram</div>
     </a>
-    <a class="footer-contacts contacts" [href]="'tel: ' + phoneNumber">{{phoneNumber}}</a>
+    <a class="footer-contacts contacts" [href]="'tel: ' + phoneNumber | phoneFormat">{{phoneNumber | phoneFormat}}</a>
   </div>
 </footer>

@@ -7,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FooterComponent {
 
-  phoneNumber: string = '+375 (29) 368-98-68';
+  phoneNumber: string = '375293689868';
   instagramLink: string = 'https://www.instagram.com/yourprofile';
 
 }
